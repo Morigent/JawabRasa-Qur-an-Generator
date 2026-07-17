@@ -1,0 +1,766 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Tailwind v4 Theme — Design Tokens
+   ============================================================ */
+@theme {
+  /* Colors */
+  --color-primary:                    #003527;
+  --color-primary-container:          #064e3b;
+  --color-on-primary:                 #ffffff;
+  --color-on-primary-container:       #80bea6;
+  --color-primary-fixed:              #b0f0d6;
+  --color-primary-fixed-dim:          #95d3ba;
+  --color-inverse-primary:            #95d3ba;
+  --color-on-primary-fixed:           #002117;
+  --color-on-primary-fixed-variant:   #0b513d;
+
+  --color-secondary:                  #735c00;
+  --color-secondary-container:        #fed65b;
+  --color-on-secondary:               #ffffff;
+  --color-on-secondary-container:     #745c00;
+  --color-secondary-fixed:            #ffe088;
+  --color-secondary-fixed-dim:        #e9c349;
+  --color-on-secondary-fixed:         #241a00;
+  --color-on-secondary-fixed-variant: #574500;
+
+  --color-tertiary:                   #2d2f2c;
+  --color-tertiary-container:         #444542;
+  --color-on-tertiary:                #ffffff;
+  --color-on-tertiary-container:      #b2b2af;
+  --color-tertiary-fixed:             #e3e2df;
+  --color-tertiary-fixed-dim:         #c7c7c3;
+  --color-on-tertiary-fixed:          #1b1c1a;
+  --color-on-tertiary-fixed-variant:  #464744;
+
+  --color-surface:                    #f9f9ff;
+  --color-surface-bright:             #f9f9ff;
+  --color-surface-dim:                #d0daf0;
+  --color-surface-container-lowest:   #ffffff;
+  --color-surface-container-low:      #f0f3ff;
+  --color-surface-container:          #e7eeff;
+  --color-surface-container-high:     #dee8ff;
+  --color-surface-container-highest:  #d9e3f9;
+  --color-surface-variant:            #d9e3f9;
+  --color-surface-tint:               #2b6954;
+  --color-background:                 #f9f9ff;
+  --color-inverse-surface:            #273141;
+  --color-inverse-on-surface:         #ebf1ff;
+
+  --color-on-surface:                 #121c2c;
+  --color-on-background:              #121c2c;
+  --color-on-surface-variant:         #404944;
+
+  --color-outline:                    #707974;
+  --color-outline-variant:            #bfc9c3;
+
+  --color-error:                      #ba1a1a;
+  --color-error-container:            #ffdad6;
+  --color-on-error:                   #ffffff;
+  --color-on-error-container:         #93000a;
+
+  /* Border Radius */
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg:      0.5rem;
+  --radius-xl:      0.75rem;
+  --radius-full:    9999px;
+
+  /* Spacing tokens */
+  --spacing-unit:               8px;
+  --spacing-container-padding:  24px;
+  --spacing-stack-gap-sm:       12px;
+  --spacing-stack-gap-md:       24px;
+  --spacing-stack-gap-lg:       48px;
+  --spacing-max-content-width:  640px;
+
+  /* Font families */
+  --font-ui-body:            Inter, system-ui, sans-serif;
+  --font-ui-label-caps:      Inter, system-ui, sans-serif;
+  --font-button-text:        Inter, system-ui, sans-serif;
+  --font-verse-display:      "Playfair Display", serif;
+  --font-verse-display-mobile: "Playfair Display", serif;
+  --font-translation-lg:     "Playfair Display", serif;
+}
+
+/* ============================================================
+   JAWAB RASA Design System
+   ============================================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300&display=swap');
+
+/* ============================================================
+   CSS Custom Properties (Design Tokens)
+   ============================================================ */
+:root {
+  /* Brand Colors */
+  --color-primary: #003527;
+  --color-primary-container: #064e3b;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #80bea6;
+  --color-primary-fixed: #b0f0d6;
+  --color-primary-fixed-dim: #95d3ba;
+  --color-inverse-primary: #95d3ba;
+
+  --color-secondary: #735c00;
+  --color-secondary-container: #564600;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #745c00;
+  --color-secondary-fixed: #ffe088;
+  --color-secondary-fixed-dim: #e9c349;
+
+  --color-tertiary-container: #444542;
+  --color-tertiary-fixed: #e3e2df;
+
+  /* Surface Colors */
+  --color-surface: #f9f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f0f3ff;
+  --color-surface-container: #e4e7f5;
+  --color-background: #f9f9ff;
+
+  /* Text Colors */
+  --color-on-surface: #121c2c;
+  --color-on-background: #121c2c;
+  --color-on-surface-variant: #414941;
+  --color-inverse-on-surface: #ebf1ff;
+
+  /* UI Colors */
+  --color-outline: #707974;
+  --color-outline-variant: #c0c9c0;
+
+  /* Error */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: 4rem;
+}
+
+/* ============================================================
+   Global Base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Material Symbols
+   ============================================================ */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  user-select: none;
+}
+
+/* ============================================================
+   Left Panel — Emerald Sanctuary
+   ============================================================ */
+.sanctuary-panel {
+  background: linear-gradient(
+    135deg,
+    #003527 0%,
+    #064e3b 40%,
+    #0a6b52 70%,
+    #003527 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated radial glow overlay */
+.sanctuary-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(176,240,214,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 70% 70%, rgba(233,195,73,0.08) 0%, transparent 60%);
+  animation: sanctuaryGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes sanctuaryGlow {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.05); }
+}
+
+/* Geometric arabesque mesh */
+.arabesque-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 40px,
+      rgba(176,240,214,0.04) 40px,
+      rgba(176,240,214,0.04) 41px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 40px,
+      rgba(176,240,214,0.04) 40px,
+      rgba(176,240,214,0.04) 41px
+    );
+}
+
+/* Large calligraphic backdrop text */
+.calligraphy-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(176,240,214,0.06);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: orbFloat 12s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  top: -80px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(176,240,214,0.15), transparent 70%);
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 20%;
+  left: -60px;
+  background: radial-gradient(circle, rgba(233,195,73,0.12), transparent 70%);
+  animation-delay: -4s;
+}
+
+.orb-3 {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 10%;
+  background: radial-gradient(circle, rgba(176,240,214,0.10), transparent 70%);
+  animation-delay: -8s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50%       { transform: translateY(-30px) scale(1.05); }
+}
+
+/* Horizontal divider shimmer */
+.divider-shimmer {
+  height: 1px;
+  width: 6rem;
+  margin: 0 auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(233,195,73,0.5),
+    rgba(233,195,73,0.8),
+    rgba(233,195,73,0.5),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmerSlide 3s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   Right Panel — Form Canvas
+   ============================================================ */
+.form-panel {
+  background-color: var(--color-surface-container-lowest);
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Vellum texture overlay */
+.vellum-texture {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ============================================================
+   Form Input Styles
+   ============================================================ */
+.form-field {
+  position: relative;
+  padding-bottom: 1px; /* tiny buffer for the animated underline */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  transition: color 0.2s ease;
+}
+
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: 0.75rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--color-on-surface);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: rgba(65, 73, 65, 0.3);
+}
+
+.form-input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
+.form-field:focus-within .form-label {
+  color: var(--color-primary);
+}
+
+/* Animated bottom-border reveal */
+.form-input-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--color-primary);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-field:focus-within .form-input-underline {
+  width: 100%;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn-primary {
+  width: 100%;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.25);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-container);
+  box-shadow: 0 12px 32px rgba(6, 78, 59, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-primary:hover::after {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
+}
+
+.btn-secondary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(192, 201, 192, 0.5);
+  background: transparent;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-container-low);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-secondary:active {
+  transform: scale(0.99);
+}
+
+/* ============================================================
+   Checkbox
+   ============================================================ */
+.custom-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.custom-checkbox:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.custom-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   Animations (entrance)
+   ============================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(112, 121, 116, 0.3);
+  border-radius: 99px;
+}
+
+/* ============================================================
+   Login Page — Islamic Pattern Background
+   ============================================================ */
+.islamic-pattern {
+  background-color: var(--color-surface);
+  background-image:
+    /* Subtle star-polygon lattice */
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(0, 53, 39, 0.025) 0deg 30deg,
+      transparent 30deg 60deg
+    );
+  background-size: 60px 60px;
+  position: relative;
+}
+
+/* Soft ambient glow in background */
+.islamic-pattern::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 30%, rgba(176,240,214,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 80% 70%, rgba(233,195,73,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   Login Card
+   ============================================================ */
+.login-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(192, 201, 192, 0.25);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 10px 40px rgba(6, 78, 59, 0.07),
+    0 2px 8px rgba(6, 78, 59, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold shimmer border on hover */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes borderRotate {
+  to { --border-angle: 360deg; }
+}
+
+.gold-border-reveal {
+  position: relative;
+}
+
+.gold-border-reveal::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0deg,
+    rgba(233, 195, 73, 0.6) 60deg,
+    rgba(176, 240, 214, 0.4) 120deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  animation: borderRotate 4s linear infinite paused;
+}
+
+.gold-border-reveal:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+/* ============================================================
+   Discovery chips
+   ============================================================ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.discovery-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 224, 136, 0.15);
+  color: var(--color-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid rgba(233, 195, 73, 0.2);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.discovery-chip:hover {
+  background: rgba(233, 195, 73, 0.25);
+  border-color: rgba(233, 195, 73, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   Login card entrance animation
+   ============================================================ */
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-reveal {
+  animation: cardReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================
+   Page transition wrapper
+   ============================================================ */
+.page-enter {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================
+   Landing Page — Reveal Animation
+   ============================================================ */
+.reveal-animation {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-animation.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Envelope idle shake */
+@keyframes envelopeShake {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  15%       { transform: rotate(-1.5deg) translateY(-2px); }
+  30%       { transform: rotate(1.5deg) translateY(-4px); }
+  45%       { transform: rotate(-1deg) translateY(-2px); }
+  60%       { transform: rotate(0.5deg) translateY(0); }
+}
+
+.envelope-shake {
+  animation: envelopeShake 4s ease-in-out infinite;
+}
+
+.envelope-shake:hover {
+  animation-play-state: paused;
+  transform: scale(1.04) translateY(-4px) !important;
+}
+
+/* Landing page vellum card (relative, not absolute) */
+.landing-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(192, 201, 192, 0.25);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 10px 40px rgba(6, 78, 59, 0.07),
+    0 2px 8px rgba(6, 78, 59, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   Dashboard — Verse Card
+   ============================================================ */
+.gold-border-top {
+  border-top: 2px solid var(--color-secondary-container);
+}
+
+/* Shimmer pulse for verse card before reveal */
+@keyframes shimmerPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.reveal-shimmer {
+  animation: shimmerPulse 2.5s ease-in-out infinite;
+}
+
+/* Text clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Bottom nav safe area padding for mobile */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
