@@ -19,6 +19,7 @@ const TOP_NAV = [
    SubscriptionPage
    ══════════════════════════════════════════════════════════ */
 export default function SubscriptionPage() {
+  useEffect(() => { console.log('[Page] SubscriptionPage mounted') }, [])
   const navigate = useNavigate()
   const { signOut } = useAuthContext()
 

@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabase'
 type PageState = 'idle' | 'loading' | 'sent' | 'error'
 
 export default function ForgotPasswordPage() {
+  useEffect(() => { console.log('[Page] ForgotPasswordPage mounted') }, [])
   const [state, setState] = useState<PageState>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [sentEmail, setSentEmail] = useState('')

@@ -187,6 +187,7 @@ const FEATURES = [
    Landing Page
    ══════════════════════════════════════════════════════════ */
 export default function LandingPage() {
+  useEffect(() => { console.log('[Page] LandingPage mounted') }, [])
   const [verseIndex, setVerseIndex] = useState(-1)
   const reflectionRef = useRef<HTMLDivElement>(null)
 

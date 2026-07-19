@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function AuthCallbackPage() {
+  useEffect(() => { console.log('[Page] AuthCallbackPage mounted') }, [])
   const navigate = useNavigate()
   const [status, setStatus] = useState<'processing' | 'error'>('processing')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)

@@ -12,9 +12,10 @@
  *  - Footer
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
+import ProfileDropdown from '../components/ProfileDropdown'
 
 /* ── Mood options ── */
 const MOODS = [
@@ -222,14 +223,6 @@ const CONSULTANTS = [
 
 const THEMES = ['Peace', 'Forgiveness', 'Creation', 'Prophets', 'Patience', 'Gratitude']
 
-/* ── Nav items ── */
-const NAV_ITEMS = [
-  { label: 'Home',    icon: 'auto_awesome', active: true,  path: '/dashboard' },
-  { label: 'Reflect', icon: 'menu_book',    active: false, path: '/reflect' },
-  { label: 'Inbox',   icon: 'chat_bubble',  active: false, path: '/inbox' },
-  { label: 'Profile', icon: 'person',       active: false, path: '#' },
-]
-
 /* ══════════════════════════════════════════════════════════
    DashboardPage
    ══════════════════════════════════════════════════════════ */
@@ -245,8 +238,9 @@ function setGenerateCount(n: number) {
 }
 
 export default function DashboardPage() {
+  useEffect(() => { console.log('[Page] DashboardPage mounted') }, [])
   const navigate = useNavigate()
-  const { user, signOut } = useAuthContext()
+  const { user } = useAuthContext()
   const [verseRevealed, setVerseRevealed] = useState(false)
   const [showMoodModal, setShowMoodModal] = useState(false)
   const [generateCount, setGenerateCountState] = useState(getGenerateCount)
@@ -338,19 +332,7 @@ export default function DashboardPage() {
             >
               <span className="material-symbols-outlined" style={{ fontSize: 24 }}>history</span>
             </button>
-            <button
-              className="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200"
-              onClick={signOut}
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-              title="Sign out"
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 24, fontVariationSettings: "'FILL' 1" }}
-              >
-                account_circle
-              </span>
-            </button>
+            <ProfileDropdown />
           </div>
         </div>
       </header>
@@ -673,39 +655,6 @@ export default function DashboardPage() {
 
         </div>
       </main>
-
-      {/* ── Mobile Bottom NavBar ── */}
-      <nav
-        className="md:hidden fixed bottom-0 w-full z-50 bg-surface rounded-t-xl border-t border-outline-variant/30 pb-safe"
-        style={{
-          boxShadow: '0 -10px 30px rgba(6,78,59,0.05)',
-          height: 64,
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          padding: '0 1rem',
-        }}
-      >
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item.label}
-            onClick={() => { if (item.path !== '#') navigate(item.path) }}
-            className="flex flex-col items-center justify-center transition-all px-4 py-1 rounded-full"
-            style={{
-              color: item.active ? 'var(--color-primary)' : 'var(--color-on-surface-variant)',
-              background: item.active ? 'rgba(176,240,214,0.2)' : 'transparent',
-              fontWeight: item.active ? 600 : 400,
-              border: 'none',
-              cursor: item.path !== '#' ? 'pointer' : 'default',
-            }}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: 22 }}>{item.icon}</span>
-            <span style={{ fontFamily: 'Inter', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', marginTop: 2 }}>
-              {item.label}
-            </span>
-          </button>
-        ))}
-      </nav>
 
       {/* ── Footer ── */}
       <footer

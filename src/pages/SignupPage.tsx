@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
 
@@ -215,6 +215,7 @@ function FormPanel() {
    Signup Page
    ============================================================ */
 export default function SignupPage() {
+  useEffect(() => { console.log('[Page] SignupPage mounted') }, [])
   return (
     <>
       <title>JAWAB RASA — Create Account</title>

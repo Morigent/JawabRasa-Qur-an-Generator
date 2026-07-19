@@ -5,9 +5,9 @@
  * and detailed cards including Arabic text, translation, tags, and date.
  */
 
-import { useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuthContext } from '../context/AuthContext'
+import ProfileDropdown from '../components/ProfileDropdown'
 
 /* ── Types ── */
 interface Reflection {
@@ -165,7 +165,6 @@ const BOTTOM_NAV = [
    ══════════════════════════════════════════════════════════ */
 export default function ReflectPage() {
   const navigate = useNavigate()
-  const { signOut } = useAuthContext()
 
   const [searchQuery, setSearchQuery] = useState('')
   const [moodFilter, setMoodFilter] = useState<string | null>(null)
@@ -262,19 +261,7 @@ export default function ReflectPage() {
             >
               <span className="material-symbols-outlined" style={{ fontSize: 24 }}>history</span>
             </button>
-            <button
-              className="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200"
-              onClick={signOut}
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-              title="Account"
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 24, fontVariationSettings: "'FILL' 1" }}
-              >
-                account_circle
-              </span>
-            </button>
+            <ProfileDropdown />
           </div>
         </div>
       </header>

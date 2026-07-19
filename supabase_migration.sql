@@ -7,6 +7,9 @@
 --   - password_hash column is removed (Supabase Auth owns passwords)
 --   - A trigger auto-creates a public.users row on every new sign-up
 --   - Row Level Security (RLS) is enabled — users can only read their own data
+--   - role column added: 'user' | 'admin' | 'superadmin'
+--   - consultants.verification_status: 'pending' | 'approved' | 'rejected'
+--   - admin_audit_logs table for tracking admin actions
 -- ============================================================
 
 -- ------------------------------------------------------------
@@ -22,6 +25,8 @@ CREATE TABLE IF NOT EXISTS public.users (
     full_name       VARCHAR(150) NOT NULL,
     email           VARCHAR(150) NOT NULL UNIQUE,
     avatar_url      TEXT,
+    role            VARCHAR(20)  NOT NULL DEFAULT 'user'
+                        CHECK (role IN ('user','admin','superadmin')),
     is_active       BOOLEAN NOT NULL DEFAULT TRUE,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -55,6 +60,24 @@ CREATE TRIGGER on_auth_user_created
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own profile"  ON public.users FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON public.users FOR UPDATE USING (auth.uid() = id);
+-- Admin dapat membaca semua profil user
+CREATE POLICY "Admins can view all profiles" ON public.users FOR SELECT
+    USING (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
+-- Superadmin dapat mengubah role user
+CREATE POLICY "Superadmin can update roles" ON public.users FOR UPDATE
+    USING (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role = 'superadmin'
+        )
+    );
 
 -- ------------------------------------------------------------
 -- 2. AYAT REFS
@@ -144,18 +167,49 @@ CREATE POLICY "Users manage own images" ON public.saved_quote_images
 -- 5. CONSULTANTS
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.consultants (
-    id                BIGSERIAL PRIMARY KEY,
-    user_id           UUID UNIQUE REFERENCES public.users(id) ON DELETE SET NULL,
-    full_name         VARCHAR(150) NOT NULL,
-    bio               TEXT,
-    photo_url         TEXT,
-    specialization    VARCHAR(150),
-    is_paid_service   BOOLEAN NOT NULL DEFAULT FALSE,
-    price_per_session NUMERIC(12,2) DEFAULT 0,
-    rating_avg        NUMERIC(3,2) DEFAULT 0,
-    is_active         BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    id                  BIGSERIAL PRIMARY KEY,
+    user_id             UUID UNIQUE REFERENCES public.users(id) ON DELETE SET NULL,
+    full_name           VARCHAR(150) NOT NULL,
+    bio                 TEXT,
+    photo_url           TEXT,
+    specialization      VARCHAR(150),
+    is_paid_service     BOOLEAN NOT NULL DEFAULT FALSE,
+    price_per_session   NUMERIC(12,2) DEFAULT 0,
+    rating_avg          NUMERIC(3,2) DEFAULT 0,
+    verification_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
+                            CHECK (verification_status IN ('pending','approved','rejected')),
+    is_active           BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Hanya consultant dengan status 'approved' yang tampil publik
+ALTER TABLE public.consultants ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view approved consultants" ON public.consultants FOR SELECT
+    USING (verification_status = 'approved' AND is_active = TRUE);
+CREATE POLICY "Admins can view all consultants" ON public.consultants FOR SELECT
+    USING (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
+CREATE POLICY "Admins can update consultant verification" ON public.consultants FOR UPDATE
+    USING (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
+CREATE POLICY "Admins can insert consultants" ON public.consultants FOR INSERT
+    WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
 
 CREATE TABLE IF NOT EXISTS public.consultant_availability (
     id              BIGSERIAL PRIMARY KEY,
@@ -198,3 +252,58 @@ CREATE TABLE IF NOT EXISTS public.consultant_reviews (
     comment         TEXT,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- ------------------------------------------------------------
+-- 6. ADMIN AUDIT LOG
+-- ------------------------------------------------------------
+-- Mencatat setiap tindakan admin/superadmin: siapa, apa, terhadap record mana.
+CREATE TABLE IF NOT EXISTS public.admin_audit_logs (
+    id              BIGSERIAL PRIMARY KEY,
+    admin_id        UUID NOT NULL REFERENCES public.users(id),
+    action          VARCHAR(100) NOT NULL,   -- mis: 'create_ayat', 'approve_consultant'
+    target_table    VARCHAR(50),             -- nama tabel yang terdampak
+    target_id       BIGINT,                  -- id record yang terdampak
+    details         JSONB,                   -- payload tambahan (before/after, alasan, dsb)
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_aal_admin_id   ON public.admin_audit_logs(admin_id);
+CREATE INDEX IF NOT EXISTS idx_aal_action     ON public.admin_audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_aal_target     ON public.admin_audit_logs(target_table, target_id);
+CREATE INDEX IF NOT EXISTS idx_aal_created_at ON public.admin_audit_logs(created_at DESC);
+
+-- RLS: hanya admin/superadmin yang bisa membaca dan menulis audit log
+ALTER TABLE public.admin_audit_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins can view audit logs" ON public.admin_audit_logs FOR SELECT
+    USING (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
+CREATE POLICY "Admins can insert audit logs" ON public.admin_audit_logs FOR INSERT
+    WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM public.users u
+            WHERE u.id = auth.uid()
+              AND u.role IN ('admin','superadmin')
+        )
+    );
+
+-- ------------------------------------------------------------
+-- 7. HELPER: fungsi cek apakah user saat ini adalah admin
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.users
+    WHERE id = auth.uid()
+      AND role IN ('admin','superadmin')
+  );
+$$;

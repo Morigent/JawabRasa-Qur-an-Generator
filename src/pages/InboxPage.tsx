@@ -11,9 +11,10 @@
  * Designed for consultants managing multiple clients at once.
  */
 
-import { useState } from 'react'
+import clsx from 'clsx'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuthContext } from '../context/AuthContext'
+import ProfileDropdown from '../components/ProfileDropdown'
 
 /* ── Types ── */
 type Status = 'online' | 'away' | 'offline'
@@ -86,14 +87,14 @@ const CLIENTS: Client[] = [
 ]
 
 const NAV_ITEMS = [
-  { label: 'Clients',  icon: 'group',       active: true },
-  { label: 'Requests', icon: 'person_add',  active: false },
-  { label: 'Inbox',    icon: 'chat_bubble', active: false },
-  { label: 'Profile',  icon: 'person',      active: false },
+  { label: 'Clients', icon: 'group', active: true },
+  { label: 'Requests', icon: 'person_add', active: false },
+  { label: 'Inbox', icon: 'chat_bubble', active: false },
+  { label: 'Profile', icon: 'person', active: false },
 ]
 
 const TOP_NAV = [
-  { label: 'Home',  path: '/dashboard' },
+  { label: 'Home', path: '/dashboard' },
   { label: 'Reflect', path: '#' },
   { label: 'Inbox', path: '/inbox' },
 ]
@@ -101,9 +102,9 @@ const TOP_NAV = [
 /* ── Status dot ── */
 function StatusDot({ status }: { status: Status }) {
   const color =
-    status === 'online'  ? 'bg-green-500' :
-    status === 'away'    ? 'bg-amber-500' :
-    'bg-on-surface-variant/40'
+    status === 'online' ? 'bg-green-500' :
+      status === 'away' ? 'bg-amber-500' :
+        'bg-on-surface-variant/40'
 
   return <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-surface ${color}`} />
 }
@@ -112,21 +113,21 @@ function StatusDot({ status }: { status: Status }) {
 function StatusBadge({ status, awayTime }: { status: Status; awayTime?: string }) {
   if (status === 'online') {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
-        <span className="w-1 h-1 rounded-full bg-green-600" />
+      <span className={clsx('inline-flex', 'items-center', 'gap-1', 'text-[11px]', 'font-semibold', 'text-green-600', 'bg-green-50', 'px-2', 'py-0.5', 'rounded-full', 'border', 'border-green-100')}>
+        <span className={clsx('w-1', 'h-1', 'rounded-full', 'bg-green-600')} />
         Online
       </span>
     )
   }
   if (status === 'away') {
     return (
-      <span className="text-[11px] font-medium text-on-surface-variant/60">
+      <span className={clsx('text-[11px]', 'font-medium', 'text-on-surface-variant/60')}>
         Away ({awayTime ?? '…'})
       </span>
     )
   }
   return (
-    <span className="text-[11px] font-medium text-on-surface-variant/40">
+    <span className={clsx('text-[11px]', 'font-medium', 'text-on-surface-variant/40')}>
       Offline
     </span>
   )
@@ -136,24 +137,24 @@ function StatusBadge({ status, awayTime }: { status: Status; awayTime?: string }
    InboxPage
    ══════════════════════════════════════════════════════════ */
 export default function InboxPage() {
+  useEffect(() => { console.log('[Page] InboxPage mounted') }, [])
   const navigate = useNavigate()
-  const { signOut } = useAuthContext()
   const [page, setPage] = useState(1)
   const pageSize = 5
   const totalClients = 42
 
   return (
-    <div className="bg-background text-on-surface font-ui-body antialiased min-h-screen flex flex-col">
+    <div className={clsx('bg-background', 'text-on-surface', 'font-ui-body', 'antialiased', 'min-h-screen', 'flex', 'flex-col')}>
       <title>JAWAB RASA — Active Sessions</title>
 
       {/* ── Top App Bar ── */}
-      <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm">
+      <header className={clsx('fixed', 'top-0', 'w-full', 'z-50', 'bg-surface/80', 'backdrop-blur-md', 'shadow-sm')}>
         <div
-          className="flex justify-between items-center px-container-padding py-unit mx-auto"
+          className={clsx('flex', 'justify-between', 'items-center', 'px-container-padding', 'py-unit', 'mx-auto')}
           style={{ maxWidth: 1440 }}
         >
           <span
-            className="text-primary tracking-tight"
+            className={clsx('text-primary', 'tracking-tight')}
             style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, cursor: 'pointer' }}
             onClick={() => navigate('/dashboard')}
           >
@@ -161,7 +162,7 @@ export default function InboxPage() {
           </span>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex gap-stack-gap-md items-center">
+          <nav className={clsx('hidden', 'md:flex', 'gap-stack-gap-md', 'items-center')}>
             {TOP_NAV.map((item) => (
               <a
                 key={item.label}
@@ -190,37 +191,25 @@ export default function InboxPage() {
           </nav>
 
           {/* Icon actions */}
-          <div className="flex items-center gap-4">
+          <div className={clsx('flex', 'items-center', 'gap-4')}>
             <button
-              className="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200"
+              className={clsx('text-on-surface-variant', 'hover:text-primary', 'transition-colors', 'active:scale-95', 'duration-200')}
               style={{ background: 'none', border: 'none', cursor: 'pointer' }}
               title="History"
             >
               <span className="material-symbols-outlined" style={{ fontSize: 24 }}>history</span>
             </button>
-            <button
-              className="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200"
-              onClick={signOut}
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-              title="Account"
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 24, fontVariationSettings: "'FILL' 1" }}
-              >
-                account_circle
-              </span>
-            </button>
+            <ProfileDropdown />
           </div>
         </div>
       </header>
 
       {/* ── Layout wrapper ── */}
-      <div className="flex flex-1 pt-16 pb-16 md:pb-0 max-w-[1440px] mx-auto w-full px-4 md:px-8 gap-8">
+      <div className={clsx('flex', 'flex-1', 'pt-16', 'pb-16', 'md:pb-0', 'max-w-[1440px]', 'mx-auto', 'w-full', 'px-4', 'md:px-8', 'gap-8')}>
         {/* ── Main content ── */}
-        <main className="flex-1 w-full pt-stack-gap-md pb-stack-gap-lg overflow-hidden">
+        <main className={clsx('flex-1', 'w-full', 'pt-stack-gap-md', 'pb-stack-gap-lg', 'overflow-hidden')}>
           <header className="mb-stack-gap-md">
-            <div className="flex justify-between items-end">
+            <div className={clsx('flex', 'justify-between', 'items-end')}>
               <div>
                 <h2
                   className="text-primary"
@@ -228,7 +217,7 @@ export default function InboxPage() {
                 >
                   Active Sessions
                 </h2>
-                <p className="text-on-surface-variant opacity-80 mt-1 font-ui-body" style={{ fontSize: 16 }}>
+                <p className={clsx('text-on-surface-variant', 'opacity-80', 'mt-1', 'font-ui-body')} style={{ fontSize: 16 }}>
                   Professional management for high-volume guidance.
                 </p>
               </div>
@@ -236,11 +225,11 @@ export default function InboxPage() {
           </header>
 
           {/* ── Table card ── */}
-          <div className="rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden bg-surface/90 backdrop-blur-sm">
+          <div className={clsx('rounded-xl', 'border', 'border-outline-variant/30', 'shadow-sm', 'overflow-hidden', 'bg-surface/90', 'backdrop-blur-sm')}>
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className={clsx('w-full', 'text-left', 'border-collapse')}>
                 <thead>
-                  <tr className="bg-surface-container-low/50 border-b border-outline-variant/20">
+                  <tr className={clsx('bg-surface-container-low/50', 'border-b', 'border-outline-variant/20')}>
                     {['Client', 'Status', 'Current Reflection', 'Mood Tags', 'Action'].map((col, i) => (
                       <th
                         key={col}
@@ -251,28 +240,28 @@ export default function InboxPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/10">
+                <tbody className={clsx('divide-y', 'divide-outline-variant/10')}>
                   {CLIENTS.map((client) => (
                     <tr
                       key={client.id}
-                      className="transition-colors hover:bg-surface-container-low/40"
+                      className={clsx('transition-colors', 'hover:bg-surface-container-low/40')}
                     >
                       {/* Client */}
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
+                      <td className={clsx('px-6', 'py-4')}>
+                        <div className={clsx('flex', 'items-center', 'gap-3')}>
                           <div className="relative">
                             <img
                               src={client.avatar}
                               alt={client.name}
-                              className="w-10 h-10 rounded-full object-cover border border-outline-variant/20"
+                              className={clsx('w-10', 'h-10', 'rounded-full', 'object-cover', 'border', 'border-outline-variant/20')}
                             />
                             <StatusDot status={client.status} />
                           </div>
                           <div>
-                            <div className="font-button-text text-on-surface font-semibold">
+                            <div className={clsx('font-button-text', 'text-on-surface', 'font-semibold')}>
                               {client.name}
                             </div>
-                            <div className="text-[10px] text-on-surface-variant opacity-60 uppercase tracking-tighter">
+                            <div className={clsx('text-[10px]', 'text-on-surface-variant', 'opacity-60', 'uppercase', 'tracking-tighter')}>
                               {client.plan}
                             </div>
                           </div>
@@ -280,39 +269,37 @@ export default function InboxPage() {
                       </td>
 
                       {/* Status */}
-                      <td className="px-6 py-4">
+                      <td className={clsx('px-6', 'py-4')}>
                         <StatusBadge status={client.status} awayTime={client.awayTime} />
                       </td>
 
                       {/* Current Reflection */}
-                      <td className="px-6 py-4 max-w-xs">
+                      <td className={clsx('px-6', 'py-4', 'max-w-xs')}>
                         <p
-                          className={`text-sm italic line-clamp-1 leading-relaxed ${
-                            client.status === 'offline'
-                              ? 'text-on-surface-variant/50'
-                              : 'text-on-surface-variant'
-                          }`}
+                          className={`text-sm italic line-clamp-1 leading-relaxed ${client.status === 'offline'
+                            ? 'text-on-surface-variant/50'
+                            : 'text-on-surface-variant'
+                            }`}
                         >
                           {client.verse}
                         </p>
                         <span
-                          className={`text-[10px] font-ui-label-caps ${
-                            client.status === 'offline'
-                              ? 'text-on-surface-variant/30'
-                              : 'text-on-surface-variant/50'
-                          }`}
+                          className={`text-[10px] font-ui-label-caps ${client.status === 'offline'
+                            ? 'text-on-surface-variant/30'
+                            : 'text-on-surface-variant/50'
+                            }`}
                         >
                           {client.reference}
                         </span>
                       </td>
 
                       {/* Mood Tags */}
-                      <td className="px-6 py-4">
-                        <div className="flex gap-1 flex-wrap">
+                      <td className={clsx('px-6', 'py-4')}>
+                        <div className={clsx('flex', 'gap-1', 'flex-wrap')}>
                           {client.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-2 py-0.5 rounded-md bg-secondary/5 text-secondary font-ui-label-caps text-[9px] uppercase border border-secondary/10"
+                              className={clsx('px-2', 'py-0.5', 'rounded-md', 'bg-secondary/5', 'text-secondary', 'font-ui-label-caps', 'text-[9px]', 'uppercase', 'border', 'border-secondary/10')}
                             >
                               {tag}
                             </span>
@@ -321,15 +308,14 @@ export default function InboxPage() {
                       </td>
 
                       {/* Action */}
-                      <td className="px-6 py-4 text-right">
+                      <td className={clsx('px-6', 'py-4', 'text-right')}>
                         <button
-                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full font-button-text text-xs transition-all active:scale-95 ${
-                            client.status !== 'offline'
-                              ? 'bg-primary text-on-primary hover:bg-primary-container shadow-sm'
-                              : 'border border-outline-variant text-primary hover:bg-surface-container-low'
-                          }`}
+                          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full font-button-text text-xs transition-all active:scale-95 ${client.status !== 'offline'
+                            ? 'bg-primary text-on-primary hover:bg-primary-container shadow-sm'
+                            : 'border border-outline-variant text-primary hover:bg-surface-container-low'
+                            }`}
                         >
-                          <span className="material-symbols-outlined text-[16px]">chat</span>
+                          <span className={clsx('material-symbols-outlined', 'text-[16px]')}>chat</span>
                           Chat
                         </button>
                       </td>
@@ -340,25 +326,24 @@ export default function InboxPage() {
             </div>
 
             {/* Pagination footer */}
-            <div className="px-6 py-3 bg-surface-container-low border-t border-outline-variant/10 flex justify-between items-center">
-              <span className="text-xs text-on-surface-variant/60 font-ui-label-caps">
+            <div className={clsx('px-6', 'py-3', 'bg-surface-container-low', 'border-t', 'border-outline-variant/10', 'flex', 'justify-between', 'items-center')}>
+              <span className={clsx('text-xs', 'text-on-surface-variant/60', 'font-ui-label-caps')}>
                 Showing {CLIENTS.length} of {totalClients} active clients
               </span>
-              <div className="flex gap-2">
+              <div className={clsx('flex', 'gap-2')}>
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className={`p-1 rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant ${
-                    page === 1 ? 'opacity-30 cursor-not-allowed' : ''
-                  }`}
+                  className={`p-1 rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant ${page === 1 ? 'opacity-30 cursor-not-allowed' : ''
+                    }`}
                   disabled={page === 1}
                 >
-                  <span className="material-symbols-outlined text-sm">chevron_left</span>
+                  <span className={clsx('material-symbols-outlined', 'text-sm')}>chevron_left</span>
                 </button>
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  className="p-1 rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant"
+                  className={clsx('p-1', 'rounded', 'hover:bg-surface-container-highest', 'transition-colors', 'text-on-surface-variant')}
                 >
-                  <span className="material-symbols-outlined text-sm">chevron_right</span>
+                  <span className={clsx('material-symbols-outlined', 'text-sm')}>chevron_right</span>
                 </button>
               </div>
             </div>
@@ -367,16 +352,15 @@ export default function InboxPage() {
       </div>
 
       {/* ── Mobile Bottom Nav ── */}
-      <nav className="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface border-t border-outline-variant/30 shadow-[0_-10px_30px_rgba(6,78,59,0.05)]">
-        <div className="flex justify-around items-center h-16 w-full px-4 pb-safe">
+      <nav className={clsx('md:hidden', 'fixed', 'bottom-0', 'w-full', 'z-50', 'rounded-t-xl', 'bg-surface', 'border-t', 'border-outline-variant/30', 'shadow-[0_-10px_30px_rgba(6,78,59,0.05)]')}>
+        <div className={clsx('flex', 'justify-around', 'items-center', 'h-16', 'w-full', 'px-4', 'pb-safe')}>
           {NAV_ITEMS.map((item) => (
             <button
               key={item.label}
-              className={`flex flex-col items-center justify-center transition-all duration-300 px-4 py-1 rounded-full ${
-                item.active
-                  ? 'text-primary font-semibold bg-primary-fixed/20'
-                  : 'text-on-surface-variant opacity-70'
-              }`}
+              className={`flex flex-col items-center justify-center transition-all duration-300 px-4 py-1 rounded-full ${item.active
+                ? 'text-primary font-semibold bg-primary-fixed/20'
+                : 'text-on-surface-variant opacity-70'
+                }`}
             >
               <span
                 className="material-symbols-outlined"
@@ -384,33 +368,33 @@ export default function InboxPage() {
               >
                 {item.icon}
               </span>
-              <span className="font-ui-label-caps text-[10px]">{item.label}</span>
+              <span className={clsx('font-ui-label-caps', 'text-[10px]')}>{item.label}</span>
             </button>
           ))}
         </div>
       </nav>
 
       {/* ── Footer ── */}
-      <footer className="w-full py-stack-gap-md mt-auto bg-surface-container-low border-t border-outline-variant/10">
-        <div className="flex flex-col items-center gap-unit px-container-padding max-w-[1440px] mx-auto text-center">
+      <footer className={clsx('w-full', 'py-stack-gap-md', 'mt-auto', 'bg-surface-container-low', 'border-t', 'border-outline-variant/10')}>
+        <div className={clsx('flex', 'flex-col', 'items-center', 'gap-unit', 'px-container-padding', 'max-w-[1440px]', 'mx-auto', 'text-center')}>
           <span
-            className="text-secondary mb-2"
+            className={clsx('text-secondary', 'mb-2')}
             style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700 }}
           >
             JAWAB RASA
           </span>
-          <div className="flex gap-4 mb-4 flex-wrap justify-center">
+          <div className={clsx('flex', 'gap-4', 'mb-4', 'flex-wrap', 'justify-center')}>
             {['Privacy', 'Terms', 'Support', 'Consultants'].map((link) => (
               <a
                 key={link}
                 href="#"
-                className="font-ui-label-caps text-ui-label-caps text-on-surface-variant opacity-70 hover:text-primary transition-opacity"
+                className={clsx('font-ui-label-caps', 'text-ui-label-caps', 'text-on-surface-variant', 'opacity-70', 'hover:text-primary', 'transition-opacity')}
               >
                 {link}
               </a>
             ))}
           </div>
-          <p className="font-ui-label-caps text-ui-label-caps text-secondary opacity-60">
+          <p className={clsx('font-ui-label-caps', 'text-ui-label-caps', 'text-secondary', 'opacity-60')}>
             © 2024 JAWAB RASA. Seek your light.
           </p>
         </div>

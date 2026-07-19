@@ -5,6 +5,7 @@
 --   MVP          -> randomize ayat berdasarkan mood (free text input user),
 --                   simpan quote jadi PNG
 --   Nice-to-have -> general/bible quotes, konsultan berbayar
+--   Admin        -> role-based access, verifikasi consultant, audit log
 --
 -- Catatan desain:
 --   - Teks ayat (Arab, latin, terjemahan) TIDAK disimpan lokal.
@@ -12,6 +13,8 @@
 --     API Al-Qur'an eksternal (mis. equran.id / alquran.cloud).
 --   - Mood BUKAN tabel referensi (lookup table), karena mood
 --     berasal dari input bebas user, bukan daftar hardcode.
+--   - role: 'user' | 'admin' | 'superadmin' (default: 'user')
+--   - verification_status consultant: 'pending' | 'approved' | 'rejected'
 -- ============================================================
 
 -- ------------------------------------------------------------
@@ -23,6 +26,8 @@ CREATE TABLE users (
     email           VARCHAR(150) NOT NULL UNIQUE,
     password_hash   VARCHAR(255) NOT NULL,
     avatar_url      TEXT,
+    role            VARCHAR(20)  NOT NULL DEFAULT 'user'
+                        CHECK (role IN ('user','admin','superadmin')),
     is_active       BOOLEAN NOT NULL DEFAULT TRUE,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -112,17 +117,19 @@ CREATE TABLE saved_quote_images (
 -- 5. CONSULTANT (nice-to-have, bisa berbayar)
 -- ------------------------------------------------------------
 CREATE TABLE consultants (
-    id              BIGSERIAL PRIMARY KEY,
-    user_id         BIGINT UNIQUE REFERENCES users(id) ON DELETE SET NULL, -- jika consultant juga login sbg user
-    full_name       VARCHAR(150) NOT NULL,
-    bio             TEXT,
-    photo_url       TEXT,
-    specialization  VARCHAR(150),        -- contoh: kecemasan, motivasi, spiritual healing
-    is_paid_service BOOLEAN NOT NULL DEFAULT FALSE,   -- konsultan gratis vs berbayar
-    price_per_session NUMERIC(12,2) DEFAULT 0,
-    rating_avg      NUMERIC(3,2) DEFAULT 0,
-    is_active       BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    id                  BIGSERIAL PRIMARY KEY,
+    user_id             BIGINT UNIQUE REFERENCES users(id) ON DELETE SET NULL, -- jika consultant juga login sbg user
+    full_name           VARCHAR(150) NOT NULL,
+    bio                 TEXT,
+    photo_url           TEXT,
+    specialization      VARCHAR(150),        -- contoh: kecemasan, motivasi, spiritual healing
+    is_paid_service     BOOLEAN NOT NULL DEFAULT FALSE,   -- konsultan gratis vs berbayar
+    price_per_session   NUMERIC(12,2) DEFAULT 0,
+    rating_avg          NUMERIC(3,2) DEFAULT 0,
+    verification_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
+                            CHECK (verification_status IN ('pending','approved','rejected')),
+    is_active           BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE consultant_availability (
@@ -165,3 +172,22 @@ CREATE TABLE consultant_reviews (
     comment         TEXT,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- ------------------------------------------------------------
+-- 6. ADMIN AUDIT LOG
+-- ------------------------------------------------------------
+-- Mencatat setiap tindakan admin/superadmin: siapa, apa, terhadap record mana.
+CREATE TABLE admin_audit_logs (
+    id              BIGSERIAL PRIMARY KEY,
+    admin_id        BIGINT NOT NULL REFERENCES users(id),
+    action          VARCHAR(100) NOT NULL,   -- mis: 'create_ayat', 'approve_consultant'
+    target_table    VARCHAR(50),             -- nama tabel yang terdampak
+    target_id       BIGINT,                  -- id record yang terdampak
+    details         JSONB,                   -- payload tambahan (before/after, alasan, dsb)
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_aal_admin_id    ON admin_audit_logs(admin_id);
+CREATE INDEX idx_aal_action      ON admin_audit_logs(action);
+CREATE INDEX idx_aal_target      ON admin_audit_logs(target_table, target_id);
+CREATE INDEX idx_aal_created_at  ON admin_audit_logs(created_at DESC);

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
 
@@ -48,6 +48,7 @@ function LoginFormField({
 }
 
 export default function LoginPage() {
+  useEffect(() => { console.log('[Page] LoginPage mounted') }, [])
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { signIn, signInWithGoogle, loading, error, clearError } = useAuthContext()

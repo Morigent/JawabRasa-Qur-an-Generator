@@ -1,18 +1,19 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import './index.css'
 
-import { checkSupabaseConnection } from './lib/supabase'
+import { checkSupabaseConnection, supabase } from './lib/supabase'
 import { AuthProvider, useAuthContext } from './context/AuthContext'
-import LandingPage      from './pages/LandingPage'
-import LoginPage        from './pages/LoginPage'
-import SignupPage       from './pages/SignupPage'
-import DashboardPage    from './pages/DashboardPage'
-import InboxPage        from './pages/InboxPage'
-import ReflectPage      from './pages/ReflectPage'
-import SubscriptionPage from './pages/SubscriptionPage'
-import AuthCallbackPage from './pages/AuthCallbackPage'
+import LandingPage        from './pages/LandingPage'
+import LoginPage          from './pages/LoginPage'
+import SignupPage         from './pages/SignupPage'
+import DashboardPage      from './pages/DashboardPage'
+import InboxPage          from './pages/InboxPage'
+import ReflectPage        from './pages/ReflectPage'
+import SubscriptionPage   from './pages/SubscriptionPage'
+import AuthCallbackPage   from './pages/AuthCallbackPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import AdminPage          from './pages/AdminPage'
 
 /* ============================================================
    Protected route — redirects to /login if not authenticated
@@ -47,6 +48,60 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
   if (!session) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
+
+  return <>{children}</>
+}
+
+/* ============================================================
+   Admin-only guard — redirects to /dashboard if not admin/superadmin
+   Uses supabase.rpc('is_admin') — SECURITY DEFINER, bypasses RLS.
+   ============================================================ */
+function RequireAdmin({ children }: { children: React.ReactNode }) {
+  const { session, loading } = useAuthContext()
+  const location = useLocation()
+  const [roleLoading, setRoleLoading] = React.useState(true)
+  const [isAdmin, setIsAdmin]         = React.useState(false)
+
+  React.useEffect(() => {
+    if (!session) { setRoleLoading(false); return }
+
+    // Use SECURITY DEFINER RPC — bypasses RLS recursive policy issue
+    supabase
+      .rpc('is_admin')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('[RequireAdmin] is_admin() error:', error)
+          setIsAdmin(false)
+        } else {
+          setIsAdmin(!!data)
+        }
+        setRoleLoading(false)
+      })
+  }, [session])
+
+  if (loading || roleLoading) {
+    return (
+      <div
+        style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-background)' }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: 36, color: 'var(--color-primary)', animation: 'spin 1s linear infinite', display: 'block', marginBottom: '0.75rem' }}
+          >
+            progress_activity
+          </span>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.875rem', color: 'var(--color-on-surface-variant)' }}>
+            Verifying admin access…
+          </p>
+        </div>
+        <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+      </div>
+    )
+  }
+
+  if (!session) return <Navigate to="/login" state={{ from: location }} replace />
+  if (!isAdmin) return <Navigate to="/dashboard" replace />
 
   return <>{children}</>
 }
@@ -103,6 +158,14 @@ function AppRoutes() {
           <RequireAuth>
             <SubscriptionPage />
           </RequireAuth>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <RequireAdmin>
+            <AdminPage />
+          </RequireAdmin>
         }
       />
       {/* Catch-all */}

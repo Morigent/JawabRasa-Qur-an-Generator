@@ -59,7 +59,9 @@ export function useAuth(): AuthState & AuthActions {
     setError(null)
     setLoading(true)
     try {
-      // 1. Create Supabase Auth account
+      // Supabase Auth creates the account + the trigger on_auth_user_created
+      // automatically inserts a row into public.users (SECURITY DEFINER, bypasses RLS).
+      // No manual INSERT needed — doing so would violate RLS.
       const { data, error: authErr } = await supabase.auth.signUp({
         email,
         password,
@@ -68,17 +70,6 @@ export function useAuth(): AuthState & AuthActions {
 
       if (authErr) throw authErr
       if (!data.user) throw new Error('Sign-up succeeded but no user returned.')
-
-      // 2. Insert into public.users (mirror row)
-      const { error: dbErr } = await supabase.from('users').insert({
-        id: data.user.id,             // use the auth UID as PK
-        full_name: fullName,
-        email,
-        password_hash: '(managed-by-supabase-auth)', // not stored; auth handles it
-      })
-
-      // Duplicate row is OK if trigger already created it
-      if (dbErr && dbErr.code !== '23505') throw dbErr
 
       return true
     } catch (e: unknown) {
