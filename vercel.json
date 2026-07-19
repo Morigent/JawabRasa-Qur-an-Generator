@@ -1,10 +1,10 @@
 {
-  "buildCommand": "pnpm build",
+  "framework": "static",
+  "buildCommand": "pnpm -F @jawabrasa/app build",
   "outputDirectory": "packages/app/dist",
-  "framework": "vite",
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
