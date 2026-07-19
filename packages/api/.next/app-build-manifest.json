@@ -1,14 +1,3 @@
 {
-  "pages": {
-    "/api/generate/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/generate/route.js"
-    ],
-    "/api/history/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/history/route.js"
-    ]
-  }
+  "pages": {}
 }
