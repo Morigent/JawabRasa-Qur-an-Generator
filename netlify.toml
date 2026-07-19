@@ -2,3 +2,10 @@
   from = "/*"
   to = "/packages/app/index.html"
   status = 200
+
+[build]
+  # Menginstruksikan Netlify untuk menjalankan build Next.js
+  command = "npm run build"
+  
+  # Direktori output standar Next.js
+  publish = ".next"
