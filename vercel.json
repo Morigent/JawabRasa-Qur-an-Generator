@@ -1,5 +1,5 @@
 {
-  "framework": "static",
+  "framework": "vite",
   "buildCommand": "pnpm -F @jawabrasa/app build",
   "outputDirectory": "packages/app/dist",
   "rewrites": [
