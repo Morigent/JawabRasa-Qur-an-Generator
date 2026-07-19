@@ -1,0 +1,26 @@
+{
+  "name": "@jawabrasa/api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@jawabrasa/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.110.7",
+    "dotenv": "^17.4.2",
+    "next": "^15.4.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "~6.0.2"
+  }
+}
