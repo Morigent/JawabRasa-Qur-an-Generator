@@ -1,7 +1,7 @@
 {
   "framework": "vite",
-  "buildCommand": "cd ../.. && pnpm -F @jawabrasa/app build",
-  "outputDirectory": "packages/app/dist",
+  "buildCommand": "pnpm -F @jawabrasa/app build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",

@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/*"
+  to = "/packages/app/index.html"
+  status = 200
