@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '@jawabrasa/shared'
 import ProfileDropdown from '../components/ProfileDropdown'
+import { apiFetch } from '../lib/api'
 
 /* ── Types ── */
 interface HistoryEntry {
@@ -71,7 +72,7 @@ export default function ReflectPage() {
           setLoading(false)
           return
         }
-        const res = await fetch('/api/history', {
+        const res = await apiFetch('/api/history', {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!res.ok) throw new Error(`API returned ${res.status}`)

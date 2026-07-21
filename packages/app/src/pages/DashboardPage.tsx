@@ -14,6 +14,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '@jawabrasa/shared'
+import { apiFetch } from '../lib/api'
 import { useAuthContext } from '../context/AuthContext'
 import ProfileDropdown from '../components/ProfileDropdown'
 
@@ -268,7 +269,7 @@ export default function DashboardPage() {
     try {
       const { data: session } = await supabase.auth.getSession()
       const token = session?.session?.access_token
-      const res = await fetch('/api/generate', {
+      const res = await apiFetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
