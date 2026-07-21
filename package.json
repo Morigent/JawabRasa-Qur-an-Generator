@@ -3,9 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@11.15.0",
   "scripts": {
     "dev": "pnpm -F @jawabrasa/app dev",
     "build": "pnpm -F @jawabrasa/app build",
+    "start:api": "pnpm -F @jawabrasa/api start",
     "lint": "pnpm -F @jawabrasa/app lint",
     "preview": "pnpm -F @jawabrasa/app preview",
     "dev:app": "pnpm -F @jawabrasa/app dev"

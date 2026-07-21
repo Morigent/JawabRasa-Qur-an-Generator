@@ -1,0 +1,14 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/admin/ayat-refs/[id]/route": "/api/admin/ayat-refs/[id]",
+  "/api/admin/users/[id]/route": "/api/admin/users/[id]",
+  "/api/admin/ayat-moods/route": "/api/admin/ayat-moods",
+  "/api/admin/ayat-refs/route": "/api/admin/ayat-refs",
+  "/api/admin/mood-tags/route": "/api/admin/mood-tags",
+  "/api/ayat/[id]/route": "/api/ayat/[id]",
+  "/api/admin/users/route": "/api/admin/users",
+  "/api/history/route": "/api/history",
+  "/api/generate/route": "/api/generate",
+  "/api/seed/route": "/api/seed",
+  "/page": "/"
+}

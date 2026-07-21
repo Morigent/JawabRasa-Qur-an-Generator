@@ -1,3 +1,109 @@
 {
-  "pages": {}
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/_not-found/page-006a66f0aefa8576.js"
+    ],
+    "/global-error": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/global-error-8868355287b16096.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/layout-b3905e1103080605.js"
+    ],
+    "/error": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/error-2f823df2922c0795.js"
+    ],
+    "/api/admin/ayat-refs/[id]/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/ayat-refs/[id]/route-b3905e1103080605.js"
+    ],
+    "/api/admin/users/[id]/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/users/[id]/route-b3905e1103080605.js"
+    ],
+    "/api/admin/ayat-moods/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/ayat-moods/route-b3905e1103080605.js"
+    ],
+    "/api/admin/ayat-refs/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/ayat-refs/route-b3905e1103080605.js"
+    ],
+    "/api/admin/mood-tags/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/mood-tags/route-b3905e1103080605.js"
+    ],
+    "/api/ayat/[id]/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/ayat/[id]/route-b3905e1103080605.js"
+    ],
+    "/api/admin/users/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/admin/users/route-b3905e1103080605.js"
+    ],
+    "/api/history/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/history/route-b3905e1103080605.js"
+    ],
+    "/api/generate/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/generate/route-b3905e1103080605.js"
+    ],
+    "/api/seed/route": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/api/seed/route-b3905e1103080605.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-909b59391e1bb37f.js",
+      "static/chunks/567e3fde-8c71b67cb98676f3.js",
+      "static/chunks/558-239c31f73a257451.js",
+      "static/chunks/main-app-c597d18661bbac01.js",
+      "static/chunks/app/page-b3905e1103080605.js"
+    ]
+  }
 }

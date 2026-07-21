@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: jawabrasa-api
+    env: node
+    region: singapore
+    buildCommand: corepack enable && pnpm install && pnpm --filter @jawabrasa/api build
+    startCommand: pnpm --filter @jawabrasa/api start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
