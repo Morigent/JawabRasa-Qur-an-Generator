@@ -1,6 +1,7 @@
 # Taste (Continuously Learned by [CommandCode][cmd])
 
 [cmd]: https://commandcode.ai/
+
 
 # ai
 - Use Gemini (Google Generative AI) instead of Claude for AI-powered features. Confidence: 0.60
