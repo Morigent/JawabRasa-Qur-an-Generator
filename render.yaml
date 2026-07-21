@@ -3,7 +3,7 @@ services:
     name: jawabrasa-api
     env: node
     region: singapore
-    buildCommand: corepack enable && pnpm install && pnpm --filter @jawabrasa/api build
+    buildCommand: npm config set prefix /opt/render/.npm-global && npm install -g pnpm@11.15.0 && pnpm install && pnpm --filter @jawabrasa/api build
     startCommand: pnpm --filter @jawabrasa/api start
     envVars:
       - key: NODE_VERSION
